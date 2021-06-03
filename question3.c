@@ -2,18 +2,21 @@
 #include <stdlib.h>
 #include <unistd.h>
 
-int main ()
-{
-  pid_t child_pid;
+int main(int argc, char **argv){
 
-  child_pid = fork ();
-  if (child_pid > 0) {
-    sleep (10);
+  int k = atoi(argv[1]);
+
+  while(k > 0) {
+    k --;
+    int fork = fork();
+    printf("PID : %d",fork);
+    if(fork){
+      wait();
+    }else{
+      sleep(10);
+    }
   }
-  else {
-      exit (0);
-  }
+  sleep(10);
   return 0;
 }
-
 

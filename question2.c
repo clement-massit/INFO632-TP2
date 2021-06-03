@@ -1,16 +1,11 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <unistd.h>
+#include <sys/wait.h>
 
+int n = 2;
 
-
-
-int foo(const char *whoami) {
-    printf("I am a %s.  My pid is:%d  my ppid is %d\n", whoami, getpid(), getppid() );
-    return 1;
-}
-
-int func(int n) 
-{
+int func(int n) {
     if (n == 0)
     { 
         return 0;
@@ -19,16 +14,17 @@ int func(int n)
     // PID 1
     int pid1 = fork(); 
     if (pid1 == -1) {
-        
         exit(0);
     }
+
     if (pid1 ==0) { 
-        foo("child");
-        n = n-1;
+        printf("VALUE : %d ", n);
+        printf("PID: %d ", getpid());
+        printf("PPID: %d\n", getppid());
+        n--;
         func(n);
-        sleep(20);
+        sleep(10);
         exit(0);
-        
     }
 
     // PID 2
@@ -38,10 +34,12 @@ int func(int n)
     }
 
     if (pid2 ==0) { 
-        foo("child");
-        n = n-1;
+        printf("VALUE : %d ", n);
+        printf("PID: %d ", getpid());
+        printf("PPID: %d\n", getppid());
+        n--;
         func(n);
-        sleep(20);
+        sleep(10);
         exit(0);   
     }
     
@@ -52,9 +50,8 @@ int func(int n)
 }
 
 
-int main(int argc, char *argv[])
-{
-    func(atoi(argv[1])); 
+int main(){
+    func(n); 
     return 0;
-    
 }
+
